@@ -2,7 +2,7 @@ package util.listadupla;
 
 import java.util.List;
 
-public class ListaDupla<T> {
+public class ListaDupla<T>/* implements Cloneable*/ {
 
     private NoDupla<T> prim;
     private NoDupla<T> ult;
@@ -84,11 +84,23 @@ public class ListaDupla<T> {
         no.setInfo(obj);
     }
 
-    public void print() {
+    public void printAll() {
         NoDupla<T> no = prim;
         while(no != null) {
             System.out.println(no.getInfo().toString());
             no = no.getProx();
         }
+    }
+
+    @Override
+    public ListaDupla<T> clone()
+    {
+        ListaDupla<T> clone = new ListaDupla();
+        NoDupla<T> no = prim;
+        while(no != null) {
+            clone.inserir(no.getInfo());
+            no = no.getProx();
+        }
+        return clone;
     }
 }

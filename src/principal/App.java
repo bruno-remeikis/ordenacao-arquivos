@@ -7,6 +7,7 @@ import io.LerArquivoConta;
 import model.Conta;
 import ordenacao.QuickSort;
 import util.listadupla.ListaDupla;
+import util.listadupla.NoDupla;
 
 public class App
 {
@@ -16,29 +17,40 @@ public class App
         String[] nContas = { "500"/*, "1000", "5000", "10000", "50000"*/ };
         
         try {
-            /*GravaArquivo g = new GravaArquivo(
-                System.getProperty("user.dir") + "/src/files/contas/conta500.txt"
-            );*/
-            
             for(String n: nContas) 
             {
-                lac = new LerArquivoConta("src/files/contas/conta" + n + ".txt");
-                
+                // -- LEITURA --
+                lac = new LerArquivoConta("src/files/entrada/contas/conta" + n + ".txt");
                 ListaDupla<Conta> contas = lac.leArquivo();
-                
-                QuickSort.quickSort(contas);
-                contas.print();
-                
+                //contas.printAll();
                 lac.fechaArquivo();
+                
+                // -- ORDENAÇÃO E GRAVAÇÃO --
+                registrarContas("quicksort", n, QuickSort.quickSort(contas));
             }
-            
-            //g.fechaArquivo();
-            
-            //ListaSimples<Conta> ls = new ListaSimples();
-            //ls.inserir(new Conta());
         }
         catch(IOException e) {
             e.printStackTrace();
+        }
+    }
+    
+    private static void registrarContas(String folder, String nArq, ListaDupla<Conta> contas)
+    {
+        String path = "src/files/saida/" + folder + "/conta" + nArq + ".txt";
+        
+        try {
+            GravaArquivo g = new GravaArquivo(path);
+
+            NoDupla<Conta> no = contas.getPrim();
+            while(no != null) {
+                g.gravaArquivo(no.getInfo().toRegistro());
+                no = no.getProx();
+            }
+
+            g.fechaArquivo();
+        }
+        catch(IOException e) {
+            System.out.println("Erro ao salvar o arquivo no caminho \"" + path + '\"');
         }
     }
 }

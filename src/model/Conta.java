@@ -52,4 +52,8 @@ public class Conta
     public String toString() {
         return "Conta: { CPF: " + cpf + ", agencia: " + agencia + ", conta: " + conta + ", saldo: " + saldo + " }";
     }
+    
+    public String toRegistro() {
+        return cpf + ";" + agencia + ";" + conta + ";" + saldo + ";\n";
+    }
 }
