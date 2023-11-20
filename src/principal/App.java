@@ -6,6 +6,7 @@ import io.GravaArquivo;
 import io.LerArquivoConta;
 import model.Conta;
 import ordenacao.QuickSort;
+import ordenacao.ShellSort;
 import util.listadupla.ListaDupla;
 import util.listadupla.NoDupla;
 
@@ -27,6 +28,7 @@ public class App
                 
                 // -- ORDENAÇÃO E GRAVAÇÃO --
                 registrarContas("quicksort", n, QuickSort.quickSort(contas));
+                registrarContas("shellsort", n, ShellSort.shellSort(contas));
             }
         }
         catch(IOException e) {
