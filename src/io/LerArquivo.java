@@ -37,7 +37,8 @@ public abstract class LerArquivo<T> {
      */
     public abstract ListaDupla<T> leArquivo()
         throws NoSuchElementException, ArrayIndexOutOfBoundsException;
-
+   
+            
     /**
      * Metodo para transformar uma linha do arquivo em um objeto do tipo T
      *

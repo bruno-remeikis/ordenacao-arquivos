@@ -7,6 +7,9 @@ import io.LerArquivoConta;
 import model.Conta;
 import ordenacao.QuickSort;
 import ordenacao.ShellSort;
+import util.abb.ArvABB;
+import util.abb.NoABB;
+import util.avl.ArvAVL;
 import util.listadupla.ListaDupla;
 import util.listadupla.NoDupla;
 
@@ -29,6 +32,33 @@ public class App
                 // -- ORDENAÇÃO E GRAVAÇÃO --
                 registrarContas("quicksort", n, QuickSort.quickSort(contas));
                 registrarContas("shellsort", n, ShellSort.shellSort(contas));
+                
+                
+                /*TESTE ARVORE ABB
+                NoDupla<Conta> no = contas.getPrim();
+                ArvABB arvAbb = new ArvABB();
+                
+                while(no != null) {
+                arvAbb.insere(no.getInfo());
+                no = no.getProx();
+            }
+                arvAbb.balancear();
+                
+                System.out.println(arvAbb.camInOrdem().toString());
+                */
+                
+                
+                NoDupla<Conta> no = contas.getPrim();
+                ArvAVL arvAvl = new ArvAVL();
+                
+                while(no != null) {
+                arvAvl.inserir(no.getInfo());
+                no = no.getProx();
+            }
+                
+                
+                arvAvl.percursoInordem();
+                
             }
         }
         catch(IOException e) {
@@ -55,4 +85,6 @@ public class App
             System.out.println("Erro ao salvar o arquivo no caminho \"" + path + '\"');
         }
     }
+    
+    
 }
