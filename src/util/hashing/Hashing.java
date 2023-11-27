@@ -1,6 +1,7 @@
 package util.hashing;
 
 import model.Conta;
+import ordenacao.QuickSort;
 import util.arvore.ArvoreBusca;
 import util.listadupla.ListaDupla;
 import util.listadupla.NoDupla;
@@ -44,6 +45,19 @@ public class Hashing implements ArvoreBusca
     @Override
     public ListaDupla<Conta> buscar(long chave) {
         int indice = calcularIndice(chave);
-        return tabela[indice];
+        return buscar(chave, indice);
+    }
+    
+    private ListaDupla<Conta> buscar(long chave, int indice) {
+    	ListaDupla<Conta> pesquisa = new ListaDupla<Conta>();
+    	
+    	NoDupla<Conta> no = tabela[indice].getPrim();
+    	while(no != null) {
+    		if(no.getInfo().getCpf() == chave)
+    			pesquisa.inserir(no.getInfo());
+    		no = no.getProx();
+    	}
+    	
+    	return pesquisa;
     }
 }

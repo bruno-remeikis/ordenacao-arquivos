@@ -11,17 +11,6 @@ public class QuickSort implements Sort
 		quickSort(lista, 0, lista.getQuantNos() - 1);
     	return lista;
 	}
-	
-/*
-    public static ListaDupla<Conta> quickSort(ListaDupla<Conta> lista) {
-        //ListaDupla<Conta> listaClone = lista.clone();
-        //quickSort(listaClone, 0, lista.getQuantNos() - 1);
-        //return listaClone;
-    	
-    	quickSort(lista, 0, lista.getQuantNos() - 1);
-    	return lista;
-    }
-*/
     
     private static void quickSort(ListaDupla<Conta> lista, int inicio, int fim) {
         if (inicio < fim) {
@@ -34,12 +23,12 @@ public class QuickSort implements Sort
     }
 
     private static int particionar(ListaDupla<Conta> lista, int inicio, int fim) {
-        long pivo = lista.get(fim).getCpf();
+        Conta pivo = lista.get(fim);
         int indiceMenor = inicio - 1;
 
         // Percorre o array e coloca os elementos menores que o pivo à esquerda e os maiores à direita
         for (int i = inicio; i < fim; i++) {
-            if (lista.get(i).getCpf() <= pivo) {
+            if (/*lista.get(i).getCpf() <= pivo.getCpf()*/ comparar(lista.get(i), pivo)) {
                 indiceMenor++;
                 trocar(lista, indiceMenor, i);
             }
@@ -49,6 +38,26 @@ public class QuickSort implements Sort
         trocar(lista, indiceMenor + 1, fim);
 
         return indiceMenor + 1;
+    }
+    
+    /**
+     * @param conta 
+     * @param pivo 
+     * @return {@code true} se as chaves de {@code conta} forem maiores que as de {@code pivo}.
+     * Ou seja: {@code true} se os itens precisarem ter suas posições trocadas para que se ordenem
+     */
+    private static boolean comparar(Conta conta, Conta pivo) 
+    {
+    	// Verificação de chave primária (cpf)
+    	if(conta.getCpf() != pivo.getCpf())
+    		return conta.getCpf() < pivo.getCpf();
+    	
+    	// Verificação de chaves secundárias: (agencia e conta)
+    	
+    	if(conta.getAgencia() != pivo.getAgencia())
+    		return conta.getAgencia() < pivo.getAgencia();
+    	
+    	return conta.getConta() < pivo.getConta();
     }
 
     private static void trocar(ListaDupla<Conta> lista, int i, int j) {

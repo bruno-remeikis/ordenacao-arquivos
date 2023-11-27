@@ -18,7 +18,7 @@ public abstract class App
     {
         LerArquivoConta lerConta;
         LerArquivoCpf lerCpf;
-        String[] nRegistros = { "500", "1000", "5000", "10000", "50000" };
+        int[] nRegistros = { 500, 1000, 5000, 10000, 50000 };
         
         try {
         	// Ler arquivo CPF.txt
@@ -26,7 +26,7 @@ public abstract class App
         	ListaDupla<Long> cpfs = lerCpf.leArquivo();
         	lerCpf.fechaArquivo();
         	
-        	for(String n: nRegistros)
+        	for(int n: nRegistros)
         	{
         		// Ler atquivo conta`n`.txt
         		lerConta = new LerArquivoConta("src/files/entrada/contas/conta" + n + ".txt");
@@ -49,21 +49,21 @@ public abstract class App
         }
     }
     
-    private static void quickSort(String nReg, ListaDupla<Conta> contas)
+    private static void quickSort(int nReg, ListaDupla<Conta> contas)
     {
     	AppGravacao.registrarContas(
     		"quicksort", nReg, contas.clone(), new QuickSort()
     	);
     }
     
-    private static void shellSort(String nReg, ListaDupla<Conta> contas)
+    private static void shellSort(int nReg, ListaDupla<Conta> contas)
     {
     	AppGravacao.registrarContas(
     		"shellsort", nReg, contas.clone(), new ShellSort()
     	);
     }
     
-    private static void abb(String nReg, ListaDupla<Conta> contas, ListaDupla<Long> cpfs)
+    private static void abb(int nReg, ListaDupla<Conta> contas, ListaDupla<Long> cpfs)
     {
     	ArvoreABB abb = new ArvoreABB(contas);
     	abb.balancear();
@@ -71,16 +71,27 @@ public abstract class App
     	AppGravacao.registrarBuscas("abb", nReg, cpfs, abb);
     }
     
-    private static void avl(String nReg, ListaDupla<Conta> contas, ListaDupla<Long> cpfs)
+    private static void avl(int nReg, ListaDupla<Conta> contas, ListaDupla<Long> cpfs)
     {
     	ArvoreAVL avl = new ArvoreAVL(contas);
     	
     	AppGravacao.registrarBuscas("avl", nReg, cpfs, avl);
     }
     
-    public static void hashing(String nReg, ListaDupla<Conta> contas, ListaDupla<Long> cpfs)
+    public static void hashing(int nReg, ListaDupla<Conta> contas, ListaDupla<Long> cpfs)
     {
-    	Hashing hashing = new Hashing(353, contas);
+    	// Tamanho ideal para o Hashing Encadeado:
+    	// Numero primo mais próximo de (`nReg` * 1.1)
+    	int hashSize = 0;
+    	switch(nReg) {
+    		case 500:   hashSize = 557;   break;
+    		case 1000:  hashSize = 1103;  break;
+    		case 5000:  hashSize = 5501;  break;
+    		case 10000: hashSize = 11069; break;
+    		case 50000: hashSize = 55001; break;
+    	}
+    	
+    	Hashing hashing = new Hashing(hashSize, contas);
     	
     	AppGravacao.registrarBuscas("hashing", nReg, cpfs, hashing);
     }
