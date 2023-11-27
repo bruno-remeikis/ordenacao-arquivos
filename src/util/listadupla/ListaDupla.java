@@ -66,6 +66,16 @@ public class ListaDupla<T>/* implements Cloneable*/ {
         this.quantNos++;
     }
     
+    public void inserirTudo(ListaDupla<T> lista)
+    {
+    	NoDupla<T> no = lista.getPrim();
+    	while(no != null) {
+    		this.inserir(no.getInfo());
+    		no = no.getProx();
+    		this.quantNos++;
+    	}
+    }
+    
     public T get(int i)
     {
         NoDupla<T> no = prim;

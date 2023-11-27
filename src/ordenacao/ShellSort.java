@@ -3,11 +3,18 @@ package ordenacao;
 import util.listadupla.ListaDupla;
 import model.Conta;
 
-public class ShellSort {
-    public static ListaDupla<Conta> shellSort(ListaDupla<Conta> lista) {
-        ListaDupla<Conta> listaClone = lista.clone();
+public class ShellSort implements Sort
+{
+	@Override
+	public ListaDupla<Conta> sort(ListaDupla<Conta> lista) {
+		shellSort(lista);
+		return lista;
+	}
+	
+    private static ListaDupla<Conta> shellSort(ListaDupla<Conta> lista) {
+        //ListaDupla<Conta> listaClone = lista.clone();
 
-        int n = listaClone.getQuantNos();
+        int n = lista.getQuantNos();
         int h = 1;
 
         // Define o valor inicial de h (intervalo)
@@ -18,14 +25,14 @@ public class ShellSort {
         // Aplica o algoritmo ShellSort
         while (h >= 1) {
             for (int i = h; i < n; i++) {
-                for (int j = i; j >= h && listaClone.get(j - h).getCpf() > listaClone.get(j).getCpf(); j -= h) {
-                    trocar(listaClone, j, j - h);
+                for (int j = i; j >= h && lista.get(j - h).getCpf() > lista.get(j).getCpf(); j -= h) {
+                    trocar(lista, j, j - h);
                 }
             }
             h = h / 3;
         }
 
-        return listaClone;
+        return lista;
     }
 
     private static void trocar(ListaDupla<Conta> lista, int i, int j) {

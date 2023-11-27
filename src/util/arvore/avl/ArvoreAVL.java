@@ -2,17 +2,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package util.avl;
+package util.arvore.avl;
 
 import model.Conta;
+import util.arvore.ArvoreBusca;
+import util.listadupla.ListaDupla;
+import util.listadupla.NoDupla;
 
 /**
  *
  * @author acata
  */
-public class ArvAVL {
+public class ArvoreAVL implements ArvoreBusca {
     
     private NoAVL raiz;
+    
+    public ArvoreAVL() {}
+    
+    public ArvoreAVL(ListaDupla<Conta> lista) {
+    	NoDupla<Conta> no = lista.getPrim();
+    	while(no != null) {
+    		this.inserir(no.getInfo());
+    		no = no.getProx();
+    	}
+    }
 
     private int altura(NoAVL no) {
         if (no == null) return 0;
@@ -50,6 +63,7 @@ public class ArvAVL {
         return y;
     }
 
+/*
     public void inserir(Conta conta) {
         raiz = inserirRecursivo(raiz, conta);
     }
@@ -88,8 +102,46 @@ public class ArvAVL {
 
         return no;
     }
+*/
     
-     // Método de busca na árvore AVL
+    public void inserir(Conta conta) {
+        raiz = inserirRecursivo(raiz, conta);
+    }
+
+    private NoAVL inserirRecursivo(NoAVL no, Conta conta) {
+        if (no == null) return new NoAVL(conta);
+
+        if (conta.getCpf() <= no.conta.getCpf()) {
+            no.esq = inserirRecursivo(no.esq, conta);
+        } else {
+            no.dir = inserirRecursivo(no.dir, conta);
+        }
+
+        no.altura = 1 + Math.max(altura(no.esq), altura(no.dir));
+
+        int balanceamento = calculaBalanceamento(no);
+
+        // Condições de rotação
+        if (balanceamento > 1 && conta.getCpf() <= no.esq.conta.getCpf()) {
+            return rotacaoDireita(no);
+        }
+        if (balanceamento < -1 && conta.getCpf() > no.dir.conta.getCpf()) {
+            return rotacaoEsquerda(no);
+        }
+        if (balanceamento > 1 && conta.getCpf() > no.esq.conta.getCpf()) {
+            no.esq = rotacaoEsquerda(no.esq);
+            return rotacaoDireita(no);
+        }
+        if (balanceamento < -1 && conta.getCpf() <= no.dir.conta.getCpf()) {
+            no.dir = rotacaoDireita(no.dir);
+            return rotacaoEsquerda(no);
+        }
+
+        return no;
+    }
+    
+/*
+    // Método de busca na árvore AVL
     public NoAVL buscar(long cpf) {
         return buscarRecursivo(raiz, cpf);
     }
@@ -103,6 +155,35 @@ public class ArvAVL {
             return buscarRecursivo(no.esq, cpf);
         } else {
             return buscarRecursivo(no.dir, cpf);
+        }
+    }
+*/
+    
+    @Override
+    public ListaDupla<Conta> buscar(long cpf) {
+        ListaDupla<Conta> nosEncontrados = new ListaDupla<Conta>();
+        buscarRecursivo(raiz, cpf, nosEncontrados);
+        return nosEncontrados;
+    }
+
+    private void buscarRecursivo(NoAVL no, long cpf, ListaDupla<Conta> nosEncontrados) {
+        if (no == null) {
+            return;
+        }
+
+        if (cpf < no.conta.getCpf()) {
+            buscarRecursivo(no.esq, cpf, nosEncontrados);
+        } else if (cpf > no.conta.getCpf()) {
+            buscarRecursivo(no.dir, cpf, nosEncontrados);
+        } else {
+            // Encontrou um nó com o CPF buscado
+            nosEncontrados.inserir(no.getConta());
+
+            // Procura por outros nós com o mesmo CPF na subárvore esquerda
+            buscarRecursivo(no.esq, cpf, nosEncontrados);
+
+            // Procura por outros nós com o mesmo CPF na subárvore direita
+            buscarRecursivo(no.dir, cpf, nosEncontrados);
         }
     }
 

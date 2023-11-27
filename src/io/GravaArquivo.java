@@ -25,7 +25,7 @@ public class GravaArquivo {
             // false significa que se o arquivo ja existir, ele sera
             // sobrescrito caso queira apenas acrescentar dados ao final
             // do arquivo, deve usar true. Se o arquivo nao existir, cria um.
-            writer = new FileWriter(new File(nome), true);
+            writer = new FileWriter(new File(nome), false);
 
             // esse objeto significa que significando que 0 arquivo poder�
             // sofrer inclus�o de dados. O segundo argumento (opcional) indica

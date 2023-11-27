@@ -3,15 +3,27 @@ package ordenacao;
 import util.listadupla.ListaDupla;
 import model.Conta;
 
-public class QuickSort
+public class QuickSort implements Sort
 {
+	@Override
+	public ListaDupla<Conta> sort(ListaDupla<Conta> lista)
+	{
+		quickSort(lista, 0, lista.getQuantNos() - 1);
+    	return lista;
+	}
+	
+/*
     public static ListaDupla<Conta> quickSort(ListaDupla<Conta> lista) {
-        ListaDupla<Conta> listaClone = lista.clone();
-        quickSort(listaClone, 0, lista.getQuantNos() - 1);
-        return listaClone;
+        //ListaDupla<Conta> listaClone = lista.clone();
+        //quickSort(listaClone, 0, lista.getQuantNos() - 1);
+        //return listaClone;
+    	
+    	quickSort(lista, 0, lista.getQuantNos() - 1);
+    	return lista;
     }
+*/
     
-    public static void quickSort(ListaDupla<Conta> lista, int inicio, int fim) {
+    private static void quickSort(ListaDupla<Conta> lista, int inicio, int fim) {
         if (inicio < fim) {
             int indiceParticao = particionar(lista, inicio, fim);
 
